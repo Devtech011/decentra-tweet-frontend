@@ -19,6 +19,7 @@ export interface AuthContextType {
   error: string | null;
   verifyWallet: (customAddress?: string) => Promise<void>;
   fetchUserProfile: (wallet: `0x${string}`) => Promise<void>;
+  setIsRegistered: (value: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -117,6 +118,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     error,
     verifyWallet,
     fetchUserProfile,
+    setIsRegistered,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
