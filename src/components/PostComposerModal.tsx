@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
 import { usePosts } from '../hooks/usePosts';
 import { useAuth } from '../hooks/useAuth';
+import toast from 'react-hot-toast';
+import type { PostComposerModalProps } from '../utils/types/post.types';
 
-interface PostComposerModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-const PostComposerModal: React.FC<PostComposerModalProps> = ({ isOpen, onClose }) => {
+const PostComposerModal: React.FC<PostComposerModalProps> = ({ onClose, onPostCreated }) => {
   const [content, setContent] = useState('');
   const { createPost, loading } = usePosts();
   const { userData } = useAuth();
   const maxLength = 280;
 
-  if (!isOpen) return null;
+  if (!onClose) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +20,7 @@ const PostComposerModal: React.FC<PostComposerModalProps> = ({ isOpen, onClose }
       await createPost(content);
       setContent('');
       setTimeout(() => {
-        onClose();
+      onClose(); 
       }, 500);
     } catch (error) {
       console.error('Failed to create post:', error);

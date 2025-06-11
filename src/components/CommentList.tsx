@@ -1,22 +1,52 @@
 import React from 'react';
+import type { CommentListProps, Comment } from '../utils/types/comment.types';
+import { useComments } from '../hooks/useComments';
 
- const dummyComments = [
-   { id: 1, postId: 1, walletAddress: '0xabc...', content: 'Dummy comment 1', timestamp: new Date().toISOString() },
-   { id: 2, postId: 1, walletAddress: '0xdef...', content: 'Dummy comment 2', timestamp: new Date().toISOString() }
- ];
+const CommentList: React.FC<CommentListProps> = ({ postId, onCommentAdded }) => {
+  const { comments, loading, error, addComment, likeComment, unlikeComment } = useComments(postId);
 
-interface CommentListProps {
-  postId: number;
-  comments: Array<{ id: number; postId: number; walletAddress: string; content: string; timestamp: string; }>;
-}
+  if (loading) {
+    return <div className="text-gray-400">Loading comments...</div>;
+  }
 
-const CommentList: React.FC<CommentListProps> = ({ postId, comments }) => {
-  // In a real app, you might filter comments by postId or use a prop.
-  const postComments = dummyComments.filter(comment => comment.postId === postId);
+  if (error) {
+    return <div className="text-red-400">Error loading comments: {error}</div>;
+  }
+
   return (
-    <div className="mt-2">
-      <h4 className="text-sm font-semibold text-purple-300">Comments ({postComments.length})</h4>
-      { postComments.map(comment => ( <div key={comment.id} className="mt-1 text-xs text-gray-300"> {comment.walletAddress} – {comment.content} – {new Date(comment.timestamp).toLocaleString()} </div> )) }
+    <div className="mt-4 space-y-4">
+      {comments.map((comment: Comment) => (
+        <div key={comment.id} className="bg-gray-700/50 p-4 rounded-lg">
+          <div className="flex items-center space-x-2">
+            {comment.profile_pic_url ? (
+              <img
+                src={comment.profile_pic_url}
+                alt="Profile"
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
+                <span className="text-white font-bold">
+                  {comment.username?.[0]?.toUpperCase() || '?'}
+                </span>
+              </div>
+            )}
+            <span className="font-semibold text-white">{comment.username || 'Anonymous'}</span>
+          </div>
+          <p className="mt-2 text-white">{comment.content}</p>
+          <div className="mt-2 flex justify-between items-center">
+            <button
+              onClick={() => comment.is_liked ? unlikeComment(comment.id) : likeComment(comment.id)}
+              className={`text-sm ${comment.is_liked ? 'text-red-500' : 'text-gray-400'} hover:text-red-500`}
+            >
+              {comment.likes} {comment.likes === 1 ? 'like' : 'likes'}
+            </button>
+            <span className="text-xs text-gray-400">
+              {new Date(comment.timestamp).toLocaleDateString()}
+            </span>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

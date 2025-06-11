@@ -1,11 +1,10 @@
 import React from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth.tsx';
+import { useAuth } from '../hooks/useAuth';
+import type { NavbarProps } from '../utils/types/profile.types';
 
 // No props needed for Navbar currently
-interface NavbarProps {}
-
 const Navbar: React.FC<NavbarProps> = () => {
   const navigate = useNavigate();
   const { userData, address, isVerified } = useAuth();

@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../hooks/useAuth';
-
-interface ProfileEditFormProps {
-  walletAddress: string;
-}
+import type { ProfileEditFormProps } from '../utils/types/profile.types';
 
 const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ walletAddress }) => {
   const { setIsRegistered } = useAuth(); // To update registration status after submission

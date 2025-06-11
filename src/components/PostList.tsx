@@ -5,12 +5,8 @@ import { useComments } from '../hooks/useComments';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import PostComposerModal from './PostComposerModal';
-
-interface PostListProps {
-  isPostModalOpen: boolean;
-  onOpenPostModal: () => void;
-  onClosePostModal: () => void;
-}
+import { PostListProps, Post } from '../utils/types/post.types';
+import PostCard from './PostCard';
 
 const PostList: React.FC<PostListProps> = ({ isPostModalOpen, onOpenPostModal, onClosePostModal }) => {
   const { posts, loading, error, fetchPosts, likePost, deletePost, totalPosts, currentPage } = usePosts();
