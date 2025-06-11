@@ -5,8 +5,9 @@ export interface Post {
   username?: string;
   profile_pic_url?: string;
   timestamp: string;
-  likes: number;
-  comments: number;
+  likes: { wallet_address: string }[];
+  likes_count?: number;
+  comments_count?: number;
   is_liked?: boolean;
 }
 
@@ -33,7 +34,7 @@ export interface PostListProps {
 export interface PostCardProps {
   post: Post;
   onLike: (postId: string) => Promise<void>;
-  onUnlike: (postId: string) => Promise<void>;
+  onDelete?: (postId: string) => Promise<void>;
 }
 
 export interface PostComposerProps {

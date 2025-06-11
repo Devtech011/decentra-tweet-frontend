@@ -3,5 +3,4 @@ export interface LikeButtonProps {
   initialLikes: number;
   isLiked: boolean;
   onLike: (postId: string) => Promise<void>;
-  onUnlike: (postId: string) => Promise<void>;
 } 
